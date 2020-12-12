@@ -1,0 +1,50 @@
+:root{
+    --colorscheme-c1: #034C8C;
+    --colorscheme-c1-burn: #032970;
+    --colorscheme-c2: #05C7F2;
+    --colorscheme-c2-neon: #05C7F28F;
+    --colorscheme-c3: #0583F2;
+}
+
+body{
+    background-color: var(--colorscheme-c1);
+    color: var(--colorscheme-c2);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+h1{
+    font-weight: 900;
+    font-size: 3vw;
+}
+
+form{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30vw, 1fr));
+    
+}
+
+button{
+    background-color: var(--colorscheme-c2);
+    color: var(--colorscheme-c1);
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: var(--colorscheme-c1-burn) 0 3px 30px;
+    font-weight: 700;
+    border-radius: 15px;
+    border: 0px;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    outline: none;
+    transition-timing-function: ease-in-out;
+    transition-duration: 150ms;
+    margin: 10px;
+    font-weight: 700;
+    font-size: min(3vw, 1.5em);
+    height: 150px;
+}
+
+button:hover{
+    box-shadow: var(--colorscheme-c2-neon) 0 3px 30px;
+}

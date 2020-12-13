@@ -3,7 +3,7 @@
 session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["admin"] == 0){
     header("location: login.php");
     exit;
 }
@@ -24,18 +24,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["user"]); ?></b>. Welcome to our site.</h1>
     </div>
     <p>
-		<?php 
 		
-			
-			if($_SESSION["admin"] == 1){
-				
-    
-				echo "<a href='upload.php' class='btn btn-primary'>Upload some shit</a>";
-			}
-		?>
-		
-        <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
+        <a href="editTeams.php" class="btn btn-primary">Edit Teams</a>
+        <a href="editMatch.php" class="btn btn-warning">Edit Match Results</a>
     </p>
 </body>
 </html>

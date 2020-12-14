@@ -1,4 +1,6 @@
 <?php
+
+require_once "config.php";
 // Check existence of id parameter before processing further
 if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
     // Include config file
@@ -6,6 +8,9 @@ if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
     header("location: error.php");
     exit();
 }
+
+$sql_team = "SELECT name from teams WHERE id =". $_GET["id"];
+$team_name = mysqli_fetch_row(mysqli_query($link, $sql_team))[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,23 +44,22 @@ if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Teams</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Add New Team</a>
+                        <h2 class="pull-left">Players</h2>
+                        <a href="create.php" class="btn btn-success pull-right">Add New Player</a>
                     </div>
                     <?php
                     // Include config file
-                    require_once "config.php";
                     
+                    
+					
                     // Attempt select query execution
-                    $sql = "SELECT persons.fname, persons.lname, players.nickname, persons.birthdate FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id = ?";
-                    if($stmt = mysqli_prepare($link, $sql)){
-						mysqli_stmt_bind_param($stmt, "s", $param_id);
-						$param_id = $_GET["id"];
-						echo $param_id;
-						mysqli_stmt_execute($stmt);
-						
-						if($result = mysqli_stmt_get_result($stmt)){
+                    //$sql = "SELECT players.id, persons.fname, persons.lname, players.nickname, persons.birthdate FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
+					$sql = "SELECT * FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
+					
+                    //echo $sql;
+						if($result = mysqli_query($link, $sql)){
 							if(mysqli_num_rows($result) > 0){
+								echo "<h1><strong> Team:</strong> ".$team_name."</h1>";
 								echo "<table class='table table-bordered table-striped'>";
 									echo "<thead>";
 										echo "<tr>";
@@ -68,13 +72,15 @@ if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
 										echo "</tr>";
 									echo "</thead>";
 									echo "<tbody>";
-									while($row = mysqli_fetch_row($result)){
+									//echo $result;
+									while($row = mysqli_fetch_array($result)){
+										//echo $row[2];
 										echo "<tr>";
 											echo "<td>" . $row['id'] . "</td>";
-											echo "<td>" . $row['persons.fname'] . "</td>";
-											echo "<td>" . $row['persons.lname'] . "</td>";
-											echo "<td>" . $row['players.nickname'] . "</td>";
-											echo "<td>" . $row['persons.birthdate'] . "</td>";
+											echo "<td>" . $row['fname'] . "</td>";
+											echo "<td>" . $row['lname'] . "</td>";
+											echo "<td>" . $row['nickname'] . "</td>";
+											echo "<td>" . $row['birthdate'] . "</td>";
 											echo "<td>";
 											
 												echo "<a href='updatePlayer.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
@@ -92,7 +98,6 @@ if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
 						} else{
 							echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 						}
-					}
 					
  
                     // Close connection

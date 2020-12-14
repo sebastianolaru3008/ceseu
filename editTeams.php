@@ -45,11 +45,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Teams</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Add New Team</a>
+                        <a href="addTeam.php" class="btn btn-success pull-right">Add New Team</a>
                     </div>
                     <?php
                     // Include config file
-                    require_once "config.php";
                     
                     // Attempt select query execution
                     $sql = "SELECT * FROM teams";
@@ -73,7 +72,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                                         echo "<td>";
 										
 											echo "<a href='readTeam.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='updateTeam.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                                             echo "<a href='deleteTeam.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";

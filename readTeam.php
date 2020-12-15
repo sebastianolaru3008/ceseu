@@ -55,7 +55,7 @@ $team_name = mysqli_fetch_row($result_team)[0];
 						<?php 
 						
 							if($_SESSION["validAddCoach"] == true){
-								echo '<a href="addCoach.php?id="'.$_SESSION["currentTeamId"].' class="btn btn-warning pull-right">Add Coach</a>';
+								echo '<a href="addCoach.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-warning pull-right">Add Coach</a>';
 							}
 							unset($_SESSION["validAddCoach"]);
 							
@@ -63,7 +63,7 @@ $team_name = mysqli_fetch_row($result_team)[0];
 						<?php 
 						
 							if($_SESSION["validAddPlayer"] == true){
-								echo '<a href="addPlayer.php?id="'.$_SESSION["currentTeamId"].' class="btn btn-success pull-right">Add New Player</a>';
+								echo '<a href="addPlayer.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-success pull-right">Add New Player</a>';
 							}
 							unset($_SESSION["validAddPlayer"]);
 							

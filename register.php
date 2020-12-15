@@ -150,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <input type="text" name="email" class="form-control" value="<?php echo $email; ?>">
                 <span class="help-block"><?php echo $email_err; ?></span>
             </div> 			
-            <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
+            <div class="form-group <?php echo (!empty($bdate_err)) ? 'has-error' : ''; ?>">
                 <label>Birth Date</label>
                 <input type="date" name="bdate" class="form-control" value="<?php echo $bdate; ?>">
                 <span class="help-block"><?php echo $bdate_err; ?></span>

@@ -1,6 +1,7 @@
 <?php
 
 require_once "config.php";
+session_start();
 // Check existence of id parameter before processing further
 if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
     // Include config file
@@ -8,9 +9,15 @@ if(!isset($_GET["id"]) || empty(trim($_GET["id"]))){
     header("location: error.php");
     exit();
 }
+$_SESSION["currentTeamId"] = $_GET["id"];
+
+$sql_coach = "SELECT * FROM coaches JOIN teams ON teams.coach = coaches.id WHERE teams.id =". $_GET["id"];
+$_SESSION["validAddCoach"] = (mysqli_num_rows(mysqli_query($link, $sql_coach)) >= 1) ? false : true;
 
 $sql_team = "SELECT name from teams WHERE id =". $_GET["id"];
-$team_name = mysqli_fetch_row(mysqli_query($link, $sql_team))[0];
+$result_team = mysqli_query($link, $sql_team);
+$_SESSION["validAddPlayer"] = (mysqli_num_rows($result_team) > 10)? false : true;
+$team_name = mysqli_fetch_row($result_team)[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +52,23 @@ $team_name = mysqli_fetch_row(mysqli_query($link, $sql_team))[0];
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Players</h2>
-                        <a href="create.php" class="btn btn-success pull-right">Add New Player</a>
+						<?php 
+						
+							if($_SESSION["validAddCoach"] == true){
+								echo '<a href="addCoach.php?id="'.$_SESSION["currentTeamId"].' class="btn btn-warning pull-right">Add Coach</a>';
+							}
+							unset($_SESSION["validAddCoach"]);
+							
+						?>
+						<?php 
+						
+							if($_SESSION["validAddPlayer"] == true){
+								echo '<a href="addPlayer.php?id="'.$_SESSION["currentTeamId"].' class="btn btn-success pull-right">Add New Player</a>';
+							}
+							unset($_SESSION["validAddPlayer"]);
+							
+						?>
+                        
                     </div>
                     <?php
                     // Include config file
@@ -55,6 +78,7 @@ $team_name = mysqli_fetch_row(mysqli_query($link, $sql_team))[0];
                     // Attempt select query execution
                     //$sql = "SELECT players.id, persons.fname, persons.lname, players.nickname, persons.birthdate FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
 					$sql = "SELECT * FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
+					
 					
                     //echo $sql;
 						if($result = mysqli_query($link, $sql)){

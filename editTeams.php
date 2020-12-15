@@ -49,7 +49,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                     </div>
                     <?php
                     // Include config file
-                    
+                    $_SESSION["currentTeamId"] = null;
                     // Attempt select query execution
                     $sql = "SELECT * FROM teams";
                     if($result = mysqli_query($link, $sql)){

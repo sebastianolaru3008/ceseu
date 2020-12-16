@@ -71,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 				players.nickname=?,
 				persons.birthdate=?
 			WHERE
-				persons.id = persons.id
+				persons.id = players.id
 			AND players.id=?";
 		try{
 			$stmt1 = mysqli_prepare($link, $sql_update);
@@ -133,7 +133,8 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
             </div>    
     
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit" name="submitplm">
+                <input type="submit" class="btn btn-primary" value="Submit" name="submit">
+				<a href="readTeam.php?id=<?php echo $_SESSION["currentTeamId"]; ?>" class="btn btn-danger pull-right">Back</a>
             </div>
     </form>
     </div>    

@@ -27,6 +27,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 		
         <a href="editTeams.php" class="btn btn-primary">Edit Teams</a>
         <a href="editMatch.php" class="btn btn-warning">Edit Match Results</a>
+		<a href="welcome.php" class="btn btn-danger btn">Back</a>
     </p>
 </body>
 </html>

@@ -52,6 +52,7 @@ $team_name = mysqli_fetch_row($result_team)[0];
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Players</h2>
+						<a href="editTeams.php" class="btn btn-danger pull-right">Back</a>
 						<?php 
 						
 							if($_SESSION["validAddCoach"] == true){
@@ -59,8 +60,6 @@ $team_name = mysqli_fetch_row($result_team)[0];
 							}
 							unset($_SESSION["validAddCoach"]);
 							
-						?>
-						<?php 
 						
 							if($_SESSION["validAddPlayer"] == true){
 								echo '<a href="addPlayer.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-success pull-right">Add New Player</a>';
@@ -109,6 +108,64 @@ $team_name = mysqli_fetch_row($result_team)[0];
 											
 												echo "<a href='updatePlayer.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 												echo "<a href='deletePlayer.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+											echo "</td>";
+										echo "</tr>";
+									}
+									echo "</tbody>";                            
+								echo "</table>";
+								// Free result set
+								mysqli_free_result($result);
+							} else{
+								echo "<p class='lead'><em>No records were found.</em></p>";
+							}
+						} else{
+							echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+						}
+					
+ 
+                    // Close connection
+                    //mysqli_close($link);
+                    ?>
+					
+					<?php
+                    // Include config file
+                    
+                    
+					
+                    // Attempt select query execution
+                    //$sql = "SELECT players.id, persons.fname, persons.lname, players.nickname, persons.birthdate FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
+					$sql = "SELECT * FROM coaches JOIN teams on coaches.id = teams.coach JOIN persons ON persons.id = coaches.id WHERE teams.id =". $_GET["id"];
+					
+					
+                    //echo $sql;
+						if($result = mysqli_query($link, $sql)){
+							if(mysqli_num_rows($result) > 0){
+								echo "<h1> Coach:</h1>";
+								echo "<table class='table table-bordered table-striped'>";
+									echo "<thead>";
+										echo "<tr>";
+											echo "<th>#</th>";
+											echo "<th>First Name</th>";
+											echo "<th>Last Name</th>";
+											echo "<th>Experience</th>";
+											echo "<th>Birthdate</th>";
+											echo "<th>Actions</th>";
+										echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
+									//echo $result;
+									while($row = mysqli_fetch_array($result)){
+										//echo $row[2];
+										echo "<tr>";
+											echo "<td>" . $row['id'] . "</td>";
+											echo "<td>" . $row['fname'] . "</td>";
+											echo "<td>" . $row['lname'] . "</td>";
+											echo "<td>" . $row['experience'] . "</td>";
+											echo "<td>" . $row['birthdate'] . "</td>";
+											echo "<td>";
+											
+												echo "<a href='updateCoach.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+												echo "<a href='deleteCoach.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
 											echo "</td>";
 										echo "</tr>";
 									}

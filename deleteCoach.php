@@ -10,7 +10,8 @@ if($_SESSION["admin"] == 1 && $_SESSION["loggedin"] == true){
     
     if(isset($_POST["id"]) && !empty($_POST["id"])){
 	
-	$sql_delete_player = "DELETE players, persons FROM players JOIN persons ON players.id = persons.id WHERE persons.id =".$_POST["id"];
+	$sql_delete_coach = "DELETE coaches, persons FROM coaches JOIN persons ON coaches.id = persons.id WHERE persons.id =".$_POST["id"];
+	$sql_team_null = "UPDATE teams SET coach = NULL WHERE teams.id =".$_SESSION["currentTeamId"];
     //DELETE persons, players, teams FROM persons JOIN players ON players.id = persons.id JOIN teams ON teams.id = players.team WHERE players.team = 1
     try{
 			//mysqli_begin_transaction($link);
@@ -24,8 +25,9 @@ if($_SESSION["admin"] == 1 && $_SESSION["loggedin"] == true){
 			//mysqli_stmt_bind_param($stmt2, "sss", mysqli_insert_id($link), $email, password_hash($password, PASSWORD_DEFAULT));
 			//mysqli_stmt_execute($stmt2);
 			
+			mysqli_query($link, $sql_team_null);
+			mysqli_query($link, $sql_delete_coach);
 			
-			mysqli_query($link, $sql_delete_player);
 			//mysqli_commit($link);
 			header("location: readTeam.php?id=".$_SESSION["currentTeamId"]);
 		} catch (mysqli_sql_exception $exception){

@@ -3,8 +3,9 @@
 require_once "config.php";
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 session_start();
-$fname=$lname=$bdate=$nickname='';
-$fname_err=$lname_err=$bdate_err=$nickname_err='';
+$fname=$lname=$bdate=$experience='';
+$fname_err=$lname_err=$bdate_err=$experience_err='';
+$idTeam=$idCoach=0;
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["admin"] == 0){
     header("location: error.php");
@@ -17,11 +18,22 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 		//header("location: error.php");
 		//exit();
 	}
-	$idTeam = $_GET["id"];
+	$sql="SELECT * from coaches JOIN persons on persons.id=coaches.id where coaches.id=".$_GET["id"];
+	$result = mysqli_query($link, $sql);
+	$row = mysqli_fetch_array($result);
+	$fname=$row["fname"];
+	$lname=$row["lname"];
+	$bdate=$row["birthdate"];
+	$experience=$row["experience"];
+	
+	$idCoach = $_GET["id"];
+	//echo "$team";
+	$fname_err = $lname_err = $bdate_err =$experience_err= "";
+	mysqli_close($link);
 }else{
 	// Processing form data when form is submitted
-	$idPlayer = $_POST["idPlayer"];
-	$idTeam = $_POST["idTeam"];
+	$idCoach = $_POST["idCoach"];
+	$idTeam = $_SESSION["currentTeamId"];
 	//Validate fname
 	if(empty(trim($_POST["fname"]))){
 		$fname_err = "Please fill this field!";
@@ -42,38 +54,38 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
 	} else {
 		$bdate = date('Y-m-d', strtotime($_POST["bdate"]));
 	}
-	//Validate nickname
-	if(empty(trim($_POST["nickname"]))){
-		$nickname_err = "Please fill this field!";
-	} else {
-		$nickname = trim($_POST["nickname"]);
-	}
+	//Validate exp
+	if(empty(trim($_POST["experience"]))){
+			$experience_err = "Please fill this field!";
+		}else if(trim($_POST["experience"]) < 0){
+			$experience_err = "Invalid input: Negative number!";
+		} else {
+			$experience = trim($_POST["experience"]);
+		}
 	
 	// Check input errors before inserting in database
-	if(empty($fname_err) && empty($lname_err) && empty($bdate_err) && empty($nickname_err)){
+	if(empty($fname_err) && empty($lname_err) && empty($bdate_err) && empty($experience_err)){
 		// Prepare an insert statement
-		//INSERT INTO persons (fname,lname,birthdate) VALUES('cosmin','stretea','10-03-2001');
-		//INSERT INTO players(id,nickname,team) VALUES(20,'gutut',2);
-		$sql_persons="INSERT INTO persons (fname,lname,birthdate) VALUES(?,?,?)";
-		$sql_players="INSERT INTO players(id,nickname,team) VALUES(?,?,?)";
+		$sql_update="UPDATE persons, coaches
+			SET persons.fname = ?,
+				persons.lname=?,
+				coaches.experience=?,
+				persons.birthdate=?
+			WHERE
+				persons.id = coaches.id
+			AND coaches.id=?";
 		try{
-			mysqli_begin_transaction($link);
-			
-			$stmt1 = mysqli_prepare($link, $sql_persons);
-			mysqli_stmt_bind_param($stmt1, "sss", $fname, $lname,$bdate);
+			$stmt1 = mysqli_prepare($link, $sql_update);
+			mysqli_stmt_bind_param($stmt1, "ssisi", $fname, $lname, $experience,$bdate,$idCoach);
 			mysqli_stmt_execute($stmt1);
-		
-			$stmt2 = mysqli_prepare($link, $sql_players);
-			mysqli_stmt_bind_param($stmt2, "iss",  mysqli_insert_id($link), $nickname, $idTeam);
-			mysqli_stmt_execute($stmt2);
 			
-			mysqli_commit($link);
+			//echo "$fname, $lname, $nickname, $bdate, $idPlayer";
 			header("location: readTeam.php?id=".$idTeam);
 		} catch (mysqli_sql_exception $exception){
 			mysqli_rollback($link);
 			throw $exception;
 		}
-
+		//start the transaction to ensure that all the sql statements are executed
 
 	}
 	// Close connection
@@ -98,8 +110,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
         <h2>Edit player</h2>
         <p>Please fill this form to edit this player.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-			<input type="hidden" name="idPlayer" value="<?php echo $idPlayer; ?>"/>
-			<input type="hidden" name="idTeam" value="<?php echo $idTeam; ?>"/>
+			<input type="hidden" name="idCoach" value="<?php echo $idCoach; ?>"/>
 			<div class="form-group <?php echo (!empty($fname_err)) ? 'has-error' : ''; ?>">
                 <label>First Name</label>
                 <input type="text" name="fname" class="form-control" value="<?php echo $fname; ?>">
@@ -109,17 +120,17 @@ if($_SERVER["REQUEST_METHOD"] != "POST"){
                 <label>Last Name</label>
                 <input type="text" name="lname" class="form-control" value="<?php echo $lname; ?>">
                 <span class="help-block"><?php echo $lname_err; ?></span>
-            </div> 
-			<div class="form-group <?php echo (!empty($nickname_err)) ? 'has-error' : ''; ?>">
-                <label>Nickname</label>
-                <input type="text" name="nickname" class="form-control" value="<?php echo $nickname; ?>">
-                <span class="help-block"><?php echo $nickname_err; ?></span>
-            </div> 			
+            </div> 		
             <div class="form-group">
                 <label>Birth Date</label>
                 <input type="date" name="bdate" class="form-control" value="<?php echo $bdate; ?>">
                 <span class="help-block"><?php echo $bdate_err; ?></span>
             </div>    
+			<div class="form-group <?php echo (!empty($nickname_err)) ? 'has-error' : ''; ?>">
+                <label>Experience</label>
+                <input type="number" name="experience" class="form-control" value="<?php echo $experience; ?>">
+                <span class="help-block"><?php echo $experience_err; ?></span>
+            </div> 	
     
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit" name="submitplm">

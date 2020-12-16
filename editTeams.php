@@ -45,6 +45,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
                 <div class="col-md-12">
                     <div class="page-header clearfix">
                         <h2 class="pull-left">Teams</h2>
+						<a href="upload.php" class="btn btn-danger pull-right">Back</a>
                         <a href="addTeam.php" class="btn btn-success pull-right">Add New Team</a>
                     </div>
                     <?php

@@ -4,13 +4,12 @@ session_start();
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-if($_SESSION["admin"] == 1 && $_SESSION["loggedin"] == true){
+if($_SESSION["tournament"] && $_SESSION["loggedin"] == true){
     // Include config file
     require_once "config.php";
     
     if(isset($_POST["id"]) && !empty($_POST["id"])){
 	$sql_delete_players = "DELETE persons, players FROM persons JOIN players ON players.id = persons.id WHERE players.team =".$_POST["id"];
-	$sql_delete_coach = "DELETE coaches, persons FROM coaches JOIN persons ON coaches.id = persons.id WHERE persons.id = ?";
     $sql_delete_team = "DELETE FROM teams WHERE id = ".$_POST["id"];
 	$sql_find_coach = "SELECT coach from teams WHERE id =".$_POST["id"];
     //DELETE persons, players, teams FROM persons JOIN players ON players.id = persons.id JOIN teams ON teams.id = players.team WHERE players.team = 1
@@ -25,15 +24,18 @@ if($_SESSION["admin"] == 1 && $_SESSION["loggedin"] == true){
 			//$stmt2 = mysqli_prepare($link, $sql_users);
 			//mysqli_stmt_bind_param($stmt2, "sss", mysqli_insert_id($link), $email, password_hash($password, PASSWORD_DEFAULT));
 			//mysqli_stmt_execute($stmt2);
-			
+			mysqli_query($link, $sql_delete_players);
+			mysqli_query($link, $sql_delete_team);
 			//find coach id
 			$result = mysqli_query($link,$sql_find_coach);
 			$row = mysqli_fetch_array($result);
 			$sql_delete_coach = "DELETE coaches, persons FROM coaches JOIN persons ON coaches.id = persons.id WHERE persons.id = ".$row["coach"];
 			
-			mysqli_query($link, $sql_delete_players);
-			mysqli_query($link, $sql_delete_team);
-			mysqli_query($link, $sql_delete_coach);
+			if(mysqli_num_rows($result) > 0){
+				mysqli_query($link, $sql_delete_coach);
+			}
+			
+			
 			
 			
 			//mysqli_commit($link);

@@ -4,7 +4,7 @@ session_start();
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-if($_SESSION["admin"] == 1 && $_SESSION["loggedin"] == true){
+if(!$_SESSION["tournament"] && $_SESSION["loggedin"] == true){
     // Include config file
     require_once "config.php";
     

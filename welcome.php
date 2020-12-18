@@ -27,10 +27,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 		<?php 
 		
 			
-			if($_SESSION["admin"] == 1){
+			if($_SESSION["tournament"]){
 				
     
-				echo "<a href='upload.php' class='btn btn-primary'>Upload some shit</a>";
+				echo "<a href='upload.php' class='btn btn-primary'>Upload</a>";
 			}
 		?>
 		

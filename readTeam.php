@@ -14,10 +14,10 @@ $_SESSION["currentTeamId"] = $_GET["id"];
 $sql_coach = "SELECT * FROM coaches JOIN teams ON teams.coach = coaches.id WHERE teams.id =". $_GET["id"];
 $_SESSION["validAddCoach"] = (mysqli_num_rows(mysqli_query($link, $sql_coach)) >= 1) ? false : true;
 
-$sql_team = "SELECT name from teams WHERE id =". $_GET["id"];
-$result_team = mysqli_query($link, $sql_team);
-$_SESSION["validAddPlayer"] = (mysqli_num_rows($result_team) > 10)? false : true;
-$team_name = mysqli_fetch_row($result_team)[0];
+$sql_team = "SELECT teams.name, COUNT(players.id) AS 'playerCount' FROM teams JOIN players ON teams.id = players.team WHERE teams.id = ".$_GET["id"]." GROUP BY teams.name";
+$result_team = mysqli_fetch_row(mysqli_query($link, $sql_team));
+$_SESSION["validAddPlayer"] = ($result_team[1] < 5)? true : false;
+$team_name = $result_team[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">

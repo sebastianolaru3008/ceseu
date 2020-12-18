@@ -8,7 +8,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
     header("location: login.php");
     exit;
 }
-	
 
 ?>
  
@@ -44,36 +43,46 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Teams</h2>
+                        <h2 class="pull-left">Match Results</h2>
 						<a href="upload.php" class="btn btn-danger pull-right">Back</a>
-                        <a href="addTeam.php" class="btn btn-success pull-right">Add New Team</a>
+                        <a href="addMatchResult.php" class="btn btn-success pull-right">Add Math Result</a>
                     </div>
                     <?php
                     // Include config file
-                    $_SESSION["currentTeamId"] = null;
+                    //$_SESSION["currentTeamId"] = null;
                     // Attempt select query execution
-                    $sql = "SELECT * FROM teams";
+                    $sql = "SELECT * FROM matchresults WHERE tournament = ".$_SESSION["tournament"];
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Team Name</th>";
-                                        echo "<th>Team Code</th>";
+                                        echo "<th>Team 1</th>";
+                                        echo "<th>Team 2</th>";
+										echo "<th>Score 1</th>";
+                                        echo "<th>Score 2</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
+									
+									$sql_team1 = "SELECT shortname FROM teams WHERE id = ".$row["id_team1"];
+									$sql_team2 = "SELECT shortname FROM teams WHERE id = ".$row["id_team2"];
+									$team1 = mysqli_fetch_array(mysqli_query($link, $sql_team1))[0];
+									$team2 = mysqli_fetch_array(mysqli_query($link, $sql_team2))[0];
+									
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['shortname'] . "</td>";
+                                        echo "<td>" . $team1 . "</td>";
+                                        echo "<td>" . $team2 . "</td>";
+										echo "<td>" . $row['score_team1'] . "</td>";
+                                        echo "<td>" . $row['score_team2'] . "</td>";
                                         echo "<td>";
 										
-											echo "<a href='readTeam.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='deleteTeam.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+											echo "<a href='readMatchResult.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='deleteMatchResult.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

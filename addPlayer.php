@@ -6,7 +6,7 @@ session_start();
 $fname=$lname=$bdate=$nickname='';
 $fname_err=$lname_err=$bdate_err=$nickname_err='';
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION["admin"] == 0){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION["tournament"]){
     header("location: error.php");
     exit();
 }

@@ -48,10 +48,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
                         <a href="addMatchResult.php" class="btn btn-success pull-right">Add Math Result</a>
                     </div>
                     <?php
+					
                     // Include config file
                     //$_SESSION["currentTeamId"] = null;
                     // Attempt select query execution
-                    $sql = "SELECT * FROM matchresults WHERE tournament = ".$_SESSION["tournament"];
+                    $sql = "SELECT matchresults.id,t1.name,t2.name,score_team1,score_team2 FROM matchresults JOIN teams t1 on matchresults.id_team1=t1.id JOIN teams t2 on matchresults.id_team2=t2.id 
+					WHERE (SELECT tournament from teams WHERE teams.id=t1.id) = ".$_SESSION["tournament"];
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
@@ -68,17 +70,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
 									
-									$sql_team1 = "SELECT shortname FROM teams WHERE id = ".$row["id_team1"];
-									$sql_team2 = "SELECT shortname FROM teams WHERE id = ".$row["id_team2"];
-									$team1 = mysqli_fetch_array(mysqli_query($link, $sql_team1))[0];
-									$team2 = mysqli_fetch_array(mysqli_query($link, $sql_team2))[0];
 									
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $team1 . "</td>";
-                                        echo "<td>" . $team2 . "</td>";
-										echo "<td>" . $row['score_team1'] . "</td>";
-                                        echo "<td>" . $row['score_team2'] . "</td>";
+                                        echo "<td>" . $row['0'] . "</td>";
+                                        echo "<td>" . $row['1'] . "</td>";
+                                        echo "<td>" . $row['2']. "</td>";
+										echo "<td>" . $row['3'] . "</td>";
+                                        echo "<td>" . $row['4'] . "</td>";
                                         echo "<td>";
 										
 											echo "<a href='readMatchResult.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";

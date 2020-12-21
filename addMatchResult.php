@@ -61,11 +61,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			throw $exception;
 		}
          
-        
+            mysqli_close($link);
     }
     
-    // Close connection
-   // mysqli_close($link);
+
 }
 ?>
 <!DOCTYPE html>
@@ -81,7 +80,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="wrapper">
-	<?php echo "<p>".$tournament."</p>";?>
         <h2>Adding Match Result</h2>
         <p>Please fill this form to add a new match</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

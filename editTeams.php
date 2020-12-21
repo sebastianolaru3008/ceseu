@@ -49,10 +49,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
                         <a href="addTeam.php" class="btn btn-success pull-right">Add New Team</a>
                     </div>
                     <?php
-                    // Include config file
                     $_SESSION["currentTeamId"] = null;
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM teams";
+                    // Attempt select query executione
+                    $sql = "SELECT * FROM teams where tournament=".$_SESSION["tournament"];
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";

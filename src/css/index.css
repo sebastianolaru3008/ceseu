@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap%27');
 
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../fonts/glyphicons-halflings-regular.eot');
+    src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+
 :root{
     --color-main: #D96704;
     --color-dark: #A6370F;
     --color-light: #F2B950;
+    --gray-main-reddened: #281515;
     --gray-main: #282828;
     --gray-dark: #1f1f1f;
     --gray-light: #A0A0A0;
@@ -35,6 +42,7 @@ body{
     border-radius: 4.5em;
     font-weight: 700;
     padding: 0.4em 1.5em;
+    box-shadow: none !important;
 }
 
 .btn:first-child{
@@ -46,9 +54,11 @@ body{
     float: right;
 }
 
-.btn:hover{
-    background-color: var(--color-main);
-    color: var(--gray-dark);
+.btn:hover,
+.btn:active,
+.btn:focus{
+    background-color: var(--color-main) !important;
+    color: var(--gray-dark) !important;
 }
 
 .upload{
@@ -63,6 +73,7 @@ body{
 h1{
     font-size: 6.5em !important;
     font-weight: 900 !important;
+    margin-bottom: 5vh;
 }
 
 h2{
@@ -85,13 +96,51 @@ form label{
 }
 
 .form-control{
-    padding: 1.5em !important;
+    min-height: 3em;
+    padding-left: 1.5em;
     font-size: 1.5em !important;
     font-weight: 700 !important;
     border-radius: 4.5em !important;
     color: var(--gray-main) !important;
 }
 
-.form-control option{
-    color: var(--color-dark) !important;
+.container-fluid{
+    min-height: 100vh;
+    min-width: 75vw;
+}
+
+.table{
+    margin-top: 5vh;
+    color: var(--color-main);
+}
+
+.table thead{
+    font-weight: 800;
+    font-size: 2em;
+}
+
+.table tbody{
+    font-weight: 500;
+    font-size: 1.5em;
+}
+
+.fas, .far{
+    color: var(--color-light);
+    padding: 0 1em;
+    float: right;
+}
+
+.table-dark{
+    background-color: var(--gray-main);
+}
+
+.action{
+    float: right;
+}
+
+.alert-danger{
+    background-color: var(--gray-main-reddened);
+    border: 0;
+    border-radius: 5vh;
+    color: var(--color-dark);
 }

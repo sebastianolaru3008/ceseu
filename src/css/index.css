@@ -104,6 +104,18 @@ form label{
     color: var(--gray-main) !important;
 }
 
+.table-control{
+    outline: 0;
+    overflow: hidden;
+    min-height: 2em;
+    text-align: center;
+    font-size: 1em !important;
+    font-weight: 700 !important;
+    border-radius: 4.5em !important;
+    color: var(--gray-main) !important;
+}
+
+
 .container-fluid{
     min-height: 100vh;
     min-width: 75vw;

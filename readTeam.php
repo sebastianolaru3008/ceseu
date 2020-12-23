@@ -24,21 +24,10 @@ $team_name = $result_team[0];
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="src/css/index.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
-    </style>
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
@@ -51,18 +40,18 @@ $team_name = $result_team[0];
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Players</h2>
-						<a href="editTeams.php" class="btn btn-danger pull-right">Back</a>
+                        <h1 class="float-left">Players</h1>
+						<a href="editTeams.php" class="btn btn-danger float-right">Back</a>
 						<?php 
 						
 							if($_SESSION["validAddCoach"] == true){
-								echo '<a href="addCoach.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-warning pull-right">Add Coach</a>';
+								echo '<a href="addCoach.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-warning float-right">Add Coach</a>';
 							}
 							unset($_SESSION["validAddCoach"]);
 							
 						
 							if($_SESSION["validAddPlayer"] == true){
-								echo '<a href="addPlayer.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-success pull-right">Add New Player</a>';
+								echo '<a href="addPlayer.php?id='.$_SESSION["currentTeamId"].'" class="btn btn-success float-right">Add New Player</a>';
 							}
 							unset($_SESSION["validAddPlayer"]);
 							
@@ -82,8 +71,8 @@ $team_name = $result_team[0];
                     //echo $sql;
 						if($result = mysqli_query($link, $sql)){
 							if(mysqli_num_rows($result) > 0){
-								echo "<h1><strong> Team:</strong> ".$team_name."</h1>";
-								echo "<table class='table table-bordered table-striped'>";
+								echo "<h2><strong> Team:</strong> ".$team_name."</h2>";
+								echo "<table class='table table-dark table-hover'>";
 									echo "<thead>";
 										echo "<tr>";
 											echo "<th>#</th>";
@@ -106,8 +95,8 @@ $team_name = $result_team[0];
 											echo "<td>" . $row['birthdate'] . "</td>";
 											echo "<td>";
 											
-												echo "<a href='updatePlayer.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-												echo "<a href='deletePlayer.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+												echo "<a class = 'action' href='updatePlayer.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='fas fa-edit'></span></a>";
+												echo "<a class = 'action' href='deletePlayer.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='fas fa-trash'></span></a>";
 											echo "</td>";
 										echo "</tr>";
 									}
@@ -135,13 +124,12 @@ $team_name = $result_team[0];
                     // Attempt select query execution
                     //$sql = "SELECT players.id, persons.fname, persons.lname, players.nickname, persons.birthdate FROM teams JOIN players on players.team = teams.id JOIN persons on persons.id = players.id WHERE teams.id =". $_GET["id"];
 					$sql = "SELECT * FROM coaches JOIN teams on coaches.id = teams.coach JOIN persons ON persons.id = coaches.id WHERE teams.id =". $_GET["id"];
-					
+					echo "<h2> Coach:</h2>";
 					
                     //echo $sql;
 						if($result = mysqli_query($link, $sql)){
 							if(mysqli_num_rows($result) > 0){
-								echo "<h1> Coach:</h1>";
-								echo "<table class='table table-bordered table-striped'>";
+								echo "<table class='table table-dark table-hover'>";
 									echo "<thead>";
 										echo "<tr>";
 											echo "<th>#</th>";
@@ -164,8 +152,8 @@ $team_name = $result_team[0];
 											echo "<td>" . $row['birthdate'] . "</td>";
 											echo "<td>";
 											
-												echo "<a href='updateCoach.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-												echo "<a href='deleteCoach.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+												echo "<a class = 'action' href='updateCoach.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='fas fa-edit'></span></a>";
+												echo "<a class = 'action' href='deleteCoach.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='fas fa-trash'></span></a>";
 											echo "</td>";
 										echo "</tr>";
 									}
@@ -187,6 +175,9 @@ $team_name = $result_team[0];
                 </div>
             </div>        
         </div>
-    </div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

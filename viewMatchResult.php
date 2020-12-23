@@ -16,21 +16,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="src/css/index.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <style type="text/css">
-        .wrapper{
-            width: 650px;
-            margin: 0 auto;
-        }
-        .page-header h2{
-            margin-top: 0;
-        }
-        table tr td:last-child a{
-            margin-right: 15px;
-        }
-    </style>
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
@@ -55,8 +44,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 					$result=mysqli_query($link, $sql_team1);
 					$row = mysqli_fetch_array($result);
 					?>
-                        <h2 class="pull-left"><?php echo $row["0"]." ".$score_team1;?></h2>
-						<a href='viewTournamentDetails.php?id=<?php echo $_SESSION["tournamentID"]; ?>' class='btn btn-danger pull-right'>Back</a>
+                        <h2 class="float-left"><?php echo $row["0"]." ".$score_team1;?></h2>
+						<a href='viewTournamentDetails.php?id=<?php echo $_SESSION["tournamentID"]; ?>' class='btn btn-danger float-right'>Back</a>
                     </div>
                     <?php
 					
@@ -71,7 +60,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 					WHERE individualresults.id_match=".$_GET["id"]." and players.team=".$id_team2;
                     if($result = mysqli_query($link, $sql_team1_stats)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-dark table-hover'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Nickname</th>";
@@ -110,11 +99,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 					$result=mysqli_query($link, $sql_team2);
 					$row = mysqli_fetch_array($result);
 					echo " <div class='page-header clearfix'>
-                        <h2 class='pull-left'>".$row["0"]." ".$score_team2."</h2>
+                        <h2 class='float-left'>".$row["0"]." ".$score_team2."</h2>
                     </div>";
 					   if($result = mysqli_query($link, $sql_team2_stats)){
                         if(mysqli_num_rows($result) > 0){
-                            echo "<table class='table table-bordered table-striped'>";
+                            echo "<table class='table table-dark table-hover'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>Nickname</th>";
@@ -158,5 +147,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>        
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 </html>

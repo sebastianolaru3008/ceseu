@@ -4,7 +4,7 @@ require_once "config.php";
 session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION["tournament"]){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
@@ -44,22 +44,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-header clearfix">
-                        <h2 class="pull-left">Teams</h2>
+                        <h2 class="pull-left">Tournaments</h2>
 						<a href="upload.php" class="btn btn-danger pull-right">Back</a>
                         <a href="addTeam.php" class="btn btn-success pull-right">Add New Team</a>
                     </div>
                     <?php
                     $_SESSION["currentTeamId"] = null;
                     // Attempt select query executione
-                    $sql = "SELECT * FROM teams where tournament=".$_SESSION["tournament"];
+                    $sql = "SELECT * FROM tournaments";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Team Name</th>";
-                                        echo "<th>Team Code</th>";
+                                        echo "<th>Tournament Name</th>";
+                                        echo "<th>Prize($)</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -68,11 +68,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || !$_SESSION
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['shortname'] . "</td>";
+                                        echo "<td>" . $row['prize'] . "</td>";
                                         echo "<td>";
 										
-											echo "<a href='readTeam.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='deleteTeam.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+											echo "<a href='viewTournamentDetails.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

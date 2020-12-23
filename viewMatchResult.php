@@ -44,7 +44,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 					$result=mysqli_query($link, $sql_team1);
 					$row = mysqli_fetch_array($result);
 					?>
-                        <h2 class="float-left"><?php echo $row["0"]." ".$score_team1;?></h2>
+                        <h2 class="float-left"><?php echo $row["0"]."&nbsp;&nbsp;-&nbsp;&nbsp;<strong><em>".$score_team1."</em></strong>";?></h2>
 						<a href='viewTournamentDetails.php?id=<?php echo $_SESSION["tournamentID"]; ?>' class='btn btn-danger float-right'>Back</a>
                     </div>
                     <?php
@@ -99,7 +99,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 					$result=mysqli_query($link, $sql_team2);
 					$row = mysqli_fetch_array($result);
 					echo " <div class='page-header clearfix'>
-                        <h2 class='float-left'>".$row["0"]." ".$score_team2."</h2>
+                        <h2 class='float-left'>".$row["0"]."&nbsp;&nbsp;-&nbsp;&nbsp;<strong><em>".$score_team2."</em></strong></h2>
                     </div>";
 					   if($result = mysqli_query($link, $sql_team2_stats)){
                         if(mysqli_num_rows($result) > 0){
